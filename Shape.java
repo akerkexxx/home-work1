@@ -1,38 +1,55 @@
-package com.fxdj;
+package models;
+import java.util.List;
 
 public class Shape {
-    private Point[] points;
-    private double perim;
-    public Shape(Point[] points) {
+    private List<Point> points;
+
+    public Shape(List<Point> points) {
         this.points = points;
     }
 
-    public double perimeter() {
-        double perimeter = 0;
-        int len = points.length;
-        for (int i = 0; i < len; i++) {
-            Point currentPoint = points[i];
-            Point nextPoint = points[(i + 1) % len];
+    public double calculatePerimeter() {
+        double perimeter = 0.0;
+        int size = points.size();
+
+        for (int i = 0; i < size; i++) {
+            Point currentPoint = points.get(i);
+            Point nextPoint = points.get((i + 1) % size); // замыкаем фигуру
             perimeter += currentPoint.distanceTo(nextPoint);
         }
-        this.perim = perimeter;
+
         return perimeter;
     }
 
+    public double getLongestSide() {
+        double longestSide = 0.0;
 
-    public double averageSide() {
-            int numOfSides = points.length;
-            return (perim/numOfSides);
+        for (int i = 0; i < points.size(); i++) {
+            Point currentPoint = points.get(i);
+            Point nextPoint = points.get((i + 1) % points.size());
+
+            double sideLength = currentPoint.distanceTo(nextPoint);
+            if (sideLength > longestSide) {
+                longestSide = sideLength;
+            }
+        }
+
+        return longestSide;
     }
 
-    public double longestSide() {
-        double longestSide = 0;
-        for (int i = 0; i < points.length; i++) {
-            Point currentPoint = points[i];
-            Point nextPoint = points[(i + 1) % points.length];
-            longestSide = Math.max(currentPoint.distanceTo(nextPoint), longestSide);
+    public double getAverageSide() {
+        double totalLength = 0.0;
+        int size = points.size();
 
+        for (int i = 0; i < size; i++) {
+            Point currentPoint = points.get(i);
+            Point nextPoint = points.get((i + 1) % size);
+            totalLength += currentPoint.distanceTo(nextPoint);
         }
-        return longestSide;
+
+        return totalLength / size;
+    }
+
+    public void addPoint(Point point) {
     }
 }
